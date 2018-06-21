@@ -1,0 +1,15 @@
+---
+- hosts: all
+  connection: local
+  become: True
+  tasks:
+    - name: test
+      command: echo "Hello, World"
+      register: result
+      changed_when: result.stdout.find('World')
+      notify: restart nginx
+
+  handlers:
+    - name: restart nginx
+      service: name=nginx state=restarted
+
